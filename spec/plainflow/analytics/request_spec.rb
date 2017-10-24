@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module Segment
+module Plainflow
   class Analytics
     describe Request do
       before do
@@ -96,7 +96,7 @@ module Segment
         let(:http_version) { 1.1 }
         let(:status_code) { 200 }
         let(:response_body) { {}.to_json }
-        let(:write_key) { 'abcdefg' }
+        let(:secret_key) { 'abcdefg' }
         let(:batch) { [] }
 
         before do
@@ -108,12 +108,12 @@ module Segment
           path = subject.instance_variable_get(:@path)
           default_headers = { 'Content-Type' => 'application/json', 'accept' => 'application/json' }
           expect(Net::HTTP::Post).to receive(:new).with(path, default_headers).and_call_original
-          subject.post(write_key, batch)
+          subject.post(secret_key, batch)
         end
 
         it 'adds basic auth to the Net::HTTP::Post' do
-          expect_any_instance_of(Net::HTTP::Post).to receive(:basic_auth).with(write_key, nil)
-          subject.post(write_key, batch)
+          expect_any_instance_of(Net::HTTP::Post).to receive(:basic_auth).with(secret_key, nil)
+          subject.post(secret_key, batch)
         end
 
         context 'with a stub' do
@@ -122,16 +122,16 @@ module Segment
           end
 
           it 'returns a 200 response' do
-            expect(subject.post(write_key, batch).status).to eq(200)
+            expect(subject.post(secret_key, batch).status).to eq(200)
           end
 
           it 'has a nil error' do
-            expect(subject.post(write_key, batch).error).to be_nil
+            expect(subject.post(secret_key, batch).error).to be_nil
           end
 
           it 'logs a debug statement' do
             expect(subject.logger).to receive(:debug).with(/stubbed request to/)
-            subject.post(write_key, batch)
+            subject.post(secret_key, batch)
           end
         end
 
@@ -139,11 +139,11 @@ module Segment
           context 'request is successful' do
             let(:status_code) { 201 }
             it 'returns a response code' do
-              expect(subject.post(write_key, batch).status).to eq(status_code)
+              expect(subject.post(secret_key, batch).status).to eq(status_code)
             end
 
             it 'returns a nil error' do
-              expect(subject.post(write_key, batch).error).to be_nil
+              expect(subject.post(secret_key, batch).error).to be_nil
             end
           end
 
@@ -152,7 +152,7 @@ module Segment
             let(:response_body) { { error: error }.to_json }
 
             it 'returns the parsed error' do
-              expect(subject.post(write_key, batch).error).to eq(error)
+              expect(subject.post(secret_key, batch).error).to eq(error)
             end
           end
 
@@ -168,7 +168,7 @@ module Segment
 
               it 'sleeps' do
                 expect(subject).to receive(:sleep).exactly(retries - 1).times
-                subject.post(write_key, batch)
+                subject.post(secret_key, batch)
               end
             end
 
@@ -176,11 +176,11 @@ module Segment
               let(:retries) { 1 }
 
               it 'returns a -1 for status' do
-                expect(subject.post(write_key, batch).status).to eq(-1)
+                expect(subject.post(secret_key, batch).status).to eq(-1)
               end
 
               it 'has a connection error' do
-                expect(subject.post(write_key, batch).error).to match(/Connection error/)
+                expect(subject.post(secret_key, batch).error).to match(/Connection error/)
               end
             end
           end

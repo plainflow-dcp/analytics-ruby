@@ -1,29 +1,29 @@
-require 'segment/analytics/defaults'
-require 'segment/analytics/utils'
-require 'segment/analytics/defaults'
-require 'segment/analytics/request'
+require 'plainflow/analytics/defaults'
+require 'plainflow/analytics/utils'
+require 'plainflow/analytics/defaults'
+require 'plainflow/analytics/request'
 
-module Segment
+module Plainflow
   class Analytics
     class Worker
-      include Segment::Analytics::Utils
-      include Segment::Analytics::Defaults
+      include Plainflow::Analytics::Utils
+      include Plainflow::Analytics::Defaults
 
       # public: Creates a new worker
       #
       # The worker continuously takes messages off the queue
-      # and makes requests to the segment.io api
+      # and makes requests to the plainflow.com api
       #
       # queue   - Queue synchronized between client and worker
-      # write_key  - String of the project's Write key
+      # secret_key  - String of the project's Write key
       # options - Hash of worker options
       #           batch_size - Fixnum of how many items to send in a batch
       #           on_error   - Proc of what to do on an error
       #
-      def initialize(queue, write_key, options = {})
+      def initialize(queue, secret_key, options = {})
         symbolize_keys! options
         @queue = queue
-        @write_key = write_key
+        @secret_key = secret_key
         @batch_size = options[:batch_size] || Queue::BATCH_SIZE
         @on_error = options[:on_error] || Proc.new { |status, error| }
         @batch = []
@@ -42,7 +42,7 @@ module Segment
             end
           end
 
-          res = Request.new.post @write_key, @batch
+          res = Request.new.post @secret_key, @batch
 
           @on_error.call res.status, res.error unless res.status == 200
 

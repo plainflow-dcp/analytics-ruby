@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-module Segment
+module Plainflow
   class Analytics
     describe Analytics do
-      let(:analytics) { Segment::Analytics.new :write_key => WRITE_KEY, :stub => true }
+      let(:analytics) { Plainflow::Analytics.new :secret_key => SECRET_KEY, :stub => true }
 
       describe '#track' do
         it 'errors without an event' do
@@ -103,13 +103,13 @@ module Segment
       end
 
       describe '#respond_to?' do
-        it 'responds to all public instance methods of Segment::Analytics::Client' do
-          expect(analytics).to respond_to(*Segment::Analytics::Client.public_instance_methods(false))
+        it 'responds to all public instance methods of Plainflow::Analytics::Client' do
+          expect(analytics).to respond_to(*Plainflow::Analytics::Client.public_instance_methods(false))
         end
       end
 
       describe '#method' do
-        Segment::Analytics::Client.public_instance_methods(false).each do |public_method|
+        Plainflow::Analytics::Client.public_instance_methods(false).each do |public_method|
           it "returns a Method object with '#{public_method}' as argument" do
             expect(analytics.method(public_method).class).to eq(Method)
           end

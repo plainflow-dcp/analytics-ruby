@@ -1,17 +1,17 @@
-require File.expand_path('../lib/segment/analytics/version', __FILE__)
+require File.expand_path('../lib/plainflow/analytics/version', __FILE__)
 
 Gem::Specification.new do |spec|
-  spec.name = 'analytics-ruby'
-  spec.version = Segment::Analytics::VERSION
+  spec.name = 'plainflow'
+  spec.version = Plainflow::Analytics::VERSION
   spec.files = Dir.glob('**/*')
   spec.require_paths = ['lib']
   spec.bindir = 'bin'
-  spec.executables = ['analytics']
-  spec.summary = 'Segment.io analytics library'
-  spec.description = 'The Segment.io ruby analytics library'
-  spec.authors = ['Segment.io']
-  spec.email = 'friends@segment.io'
-  spec.homepage = 'https://github.com/segmentio/analytics-ruby'
+  spec.executables = ['plainflow']
+  spec.summary = 'Plainflow library'
+  spec.description = 'The Plainflow ruby library'
+  spec.authors = ['Plainflow']
+  spec.email = 'friends@plainflow.com'
+  spec.homepage = 'https://github.com/plainflow-dcp/plainflow-ruby'
   spec.license = 'MIT'
 
   # Ruby 1.8 requires json

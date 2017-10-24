@@ -1,17 +1,17 @@
-require 'segment/analytics/defaults'
-require 'segment/analytics/utils'
-require 'segment/analytics/response'
-require 'segment/analytics/logging'
+require 'plainflow/analytics/defaults'
+require 'plainflow/analytics/utils'
+require 'plainflow/analytics/response'
+require 'plainflow/analytics/logging'
 require 'net/http'
 require 'net/https'
 require 'json'
 
-module Segment
+module Plainflow
   class Analytics
     class Request
-      include Segment::Analytics::Defaults::Request
-      include Segment::Analytics::Utils
-      include Segment::Analytics::Logging
+      include Plainflow::Analytics::Defaults::Request
+      include Plainflow::Analytics::Utils
+      include Plainflow::Analytics::Logging
 
       # public: Creates a new request object to send analytics batch
       #
@@ -35,7 +35,7 @@ module Segment
       # public: Posts the write key and batch of messages to the API.
       #
       # returns - Response of the status and error if it exists
-      def post(write_key, batch)
+      def post(secret_key, batch)
         status, error = nil, nil
         remaining_retries = @retries
         backoff = @backoff
@@ -43,12 +43,12 @@ module Segment
         begin
           payload = JSON.generate :sentAt => datetime_in_iso8601(Time.new), :batch => batch
           request = Net::HTTP::Post.new(@path, headers)
-          request.basic_auth write_key, nil
+          request.basic_auth secret_key, nil
 
           if self.class.stub
             status = 200
             error = nil
-            logger.debug "stubbed request to #{@path}: write key = #{write_key}, payload = #{payload}"
+            logger.debug "stubbed request to #{@path}: write key = #{secret_key}, payload = #{payload}"
           else
             res = @http.request(request, payload)
             status = res.code.to_i

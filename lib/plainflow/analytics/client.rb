@@ -1,31 +1,31 @@
 require 'thread'
 require 'time'
-require 'segment/analytics/utils'
-require 'segment/analytics/worker'
-require 'segment/analytics/defaults'
+require 'plainflow/analytics/utils'
+require 'plainflow/analytics/worker'
+require 'plainflow/analytics/defaults'
 
-module Segment
+module Plainflow
   class Analytics
     class Client
-      include Segment::Analytics::Utils
+      include Plainflow::Analytics::Utils
 
       # public: Creates a new client
       #
       # attrs - Hash
-      #           :write_key         - String of your project's write_key
+      #           :secret_key         - String of your project's secret_key
       #           :max_queue_size - Fixnum of the max calls to remain queued (optional)
       #           :on_error       - Proc which handles error calls from the API
       def initialize attrs = {}
         symbolize_keys! attrs
 
         @queue = Queue.new
-        @write_key = attrs[:write_key]
+        @secret_key = attrs[:secret_key]
         @max_queue_size = attrs[:max_queue_size] || Defaults::Queue::MAX_SIZE
         @options = attrs
         @worker_mutex = Mutex.new
-        @worker = Worker.new @queue, @write_key, @options
+        @worker = Worker.new @queue, @secret_key, @options
 
-        check_write_key!
+        check_secret_key!
 
         at_exit { @worker_thread && @worker_thread[:should_exit] = true }
       end
@@ -328,12 +328,12 @@ module Segment
       #
       # context - Hash of call context
       def add_context(context)
-        context[:library] =  { :name => "analytics-ruby", :version => Segment::Analytics::VERSION.to_s }
+        context[:library] =  { :name => "analytics-ruby", :version => Plainflow::Analytics::VERSION.to_s }
       end
 
-      # private: Checks that the write_key is properly initialized
-      def check_write_key!
-        fail ArgumentError, 'Write key must be initialized' if @write_key.nil?
+      # private: Checks that the secret_key is properly initialized
+      def check_secret_key!
+        fail ArgumentError, 'Write key must be initialized' if @secret_key.nil?
       end
 
       # private: Checks the timstamp option to make sure it is a Time.

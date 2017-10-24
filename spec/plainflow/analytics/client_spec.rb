@@ -1,25 +1,25 @@
 require 'spec_helper'
 
-module Segment
+module Plainflow
   class Analytics
     describe Client do
-      let(:client) { Client.new :write_key => WRITE_KEY }
+      let(:client) { Client.new :secret_key => SECRET_KEY }
       let(:queue) { client.instance_variable_get :@queue }
 
       describe '#initialize' do
-        it 'errors if no write_key is supplied' do
+        it 'errors if no secret_key is supplied' do
           expect { Client.new }.to raise_error(ArgumentError)
         end
 
-        it 'does not error if a write_key is supplied' do
+        it 'does not error if a secret_key is supplied' do
           expect do
-            Client.new :write_key => WRITE_KEY
+            Client.new :secret_key => SECRET_KEY
           end.to_not raise_error
         end
 
-        it 'does not error if a write_key is supplied as a string' do
+        it 'does not error if a secret_key is supplied as a string' do
           expect do
-            Client.new 'write_key' => WRITE_KEY
+            Client.new 'secret_key' => SECRET_KEY
           end.to_not raise_error
         end
       end

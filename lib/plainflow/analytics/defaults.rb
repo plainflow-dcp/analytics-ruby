@@ -1,8 +1,8 @@
-module Segment
+module Plainflow
   class Analytics
     module Defaults
       module Request
-        HOST = 'api.segment.io'
+        HOST = 'pipe.plainflow.net'
         PORT = 443
         PATH = '/v1/import'
         SSL = true

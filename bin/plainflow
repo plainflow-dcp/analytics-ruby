@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'segment/analytics'
+require 'plainflow/analytics'
 require 'rubygems'
 require 'commander/import'
 require 'time'
@@ -12,7 +12,7 @@ program :description, 'scripting simulator'
 
 # use an env var for write key, instead of a flag
 Analytics = Segment::Analytics.new({
-  write_key: ENV['SEGMENT_WRITE_KEY'],
+  secret_key: ENV['PLAINFLOW_SECRET_KEY'],
   on_error: Proc.new { |status, msg| print msg }
 })
 
@@ -22,8 +22,8 @@ end
 
 # high level
 # analytics <method> [options]
-# SEGMENT_WRITE_KEY=<write_key> ./analytics.rb <method> [options]
-# SEGMENT_WRITE_KEY=<write_key> ./analytics.rb track --event testing --user 1234 --anonymous 567 --properties '{"hello": "goodbye"}' --context '{"slow":"poke"}'
+# PLAINFLOW_SECRET_KEY=<secret_key> ./analytics.rb <method> [options]
+# PLAINFLOW_SECRET_KEY=<secret_key> ./analytics.rb track --event testing --user 1234 --anonymous 567 --properties '{"hello": "goodbye"}' --context '{"slow":"poke"}'
 
 
 

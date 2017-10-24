@@ -1,3 +1,7 @@
+2.2.3.pre-p1 / 2017-10-24
+==================
+
+  * The library has been forked to work with Plainflow.
 
 2.2.3.pre / 2017-09-14
 ==================

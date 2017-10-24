@@ -1,12 +1,12 @@
-require 'segment/analytics'
+require 'plainflow/analytics'
 require 'active_support/time'
 
 # Setting timezone for ActiveSupport::TimeWithZone to UTC
 Time.zone = 'UTC'
 
-module Segment
+module Plainflow
   class Analytics
-    WRITE_KEY = 'testsecret'
+    SECRET_KEY = 'testsecret'
 
     TRACK = {
       :event => 'Ruby Library test event',
