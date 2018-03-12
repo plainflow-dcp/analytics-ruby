@@ -43,7 +43,7 @@ There are a few calls available, please check the documentation section.
 
 ## Documentation
 
-Documentation is available at [www.plainflow.com/docs/developers/sdk/ruby](https://www.plainflow.com/docs/developers/sdk/ruby)
+Documentation is available at [https://www.plainflow.com/docs/developers/data-tracking-libraries/ruby](https://www.plainflow.com/docs/developers/data-tracking-libraries/ruby)
 
 ## Testing
 
